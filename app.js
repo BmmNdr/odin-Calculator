@@ -1,10 +1,7 @@
-const numberButtons = document.getElementsByClassName('number');
-const display = document.querySelector("#current")
+const NUMBERS = document.getElementsByClassName('number');
+const DISPLAY = document.querySelector("#current");
+const CLEAR = document.getElementById('clsBtn');
 
-for (let index = 0; index < numberButtons.length; index++) {
-    const number = numberButtons[index];
+for (let i = 0; i < NUMBERS.length; i++)    NUMBERS[i].addEventListener('click', () => { DISPLAY.textContent += NUMBERS[i].textContent; });
 
-    number.addEventListener('click', () => {
-        display.textContent += number.textContent;
-    })
-}
+CLEAR.addEventListener('click', () => {DISPLAY.textContent = ''});
