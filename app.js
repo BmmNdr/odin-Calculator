@@ -5,6 +5,6 @@ for (let index = 0; index < numberButtons.length; index++) {
     const number = numberButtons[index];
 
     number.addEventListener('click', () => {
-        display.textContent = number.textContent;
+        display.textContent += number.textContent;
     })
 }
