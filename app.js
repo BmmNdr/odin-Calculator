@@ -89,7 +89,6 @@ function evaluate(numbers, operators) {
         let indexD = operators.indexOf('/');
 
         if (indexD < 0 && indexM < 0) break;
-
         if (indexD < 0) index = indexM;
         else if (indexM < 0) index = indexD;
         else index = indexD < indexM ? indexD : indexM;
@@ -108,7 +107,6 @@ function evaluate(numbers, operators) {
         let indexM = operators.indexOf('-');
 
         if (indexM < 0 && indexP < 0) break;
-
         if (indexM < 0) index = indexP;
         else if (indexP < 0) index = indexM;
         else index = indexM < indexP ? indexM : indexP;

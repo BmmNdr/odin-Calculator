@@ -3,7 +3,8 @@
     src: url('./assets/digital-7__mono_.ttf');
 }
 
-html, body {
+html,
+body {
     align-content: center;
     justify-content: center;
     height: 100%;
@@ -52,7 +53,7 @@ body {
     background-color: lightgray;
     padding: 5px;
 
-    overflow:overlay;
+    overflow: overlay;
 }
 
 #calculator #screen #current {
@@ -62,7 +63,7 @@ body {
 
     background-color: gainsboro;
 
-    overflow:overlay;
+    overflow: overlay;
 }
 
 #calculator #numpad {
@@ -73,14 +74,18 @@ body {
     grid-template-columns: auto auto auto auto;
 }
 
-.number, .operator, #dot, #equal {
+.number,
+.operator,
+#dot,
+#equal {
     height: 50px;
     width: 60px;
 
     margin: 5px;
 }
 
-#clsBtn, #dltBtn{
+#clsBtn,
+#dltBtn {
     grid-column: span 2;
 
     margin: 5px;
