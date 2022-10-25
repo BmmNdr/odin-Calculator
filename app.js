@@ -13,6 +13,8 @@ let numberInSelection = 0;
 let selectedNumbers = [];
 let selectedOperators = [];
 
+const regex = new RegExp('[0-9]');
+
 //numbers
 for (let i = 0; i < NUMBERS.length; i++)
     NUMBERS[i].addEventListener('click', () => {
@@ -27,6 +29,7 @@ for (let i = 0; i < OPERATORS.length; i++)
         DISPLAY.textContent += OPERATORS[i].textContent;
 
         selectedOperators.push(OPERATORS[i].textContent)
+
         selectedNumbers.push(numberInSelection);
         numberInSelection = 0;
     });
@@ -35,10 +38,22 @@ for (let i = 0; i < OPERATORS.length; i++)
 CLEAR.addEventListener('click', () => {
     DISPLAY.textContent = '';
     LAST.textContent = '';
+    numberInSelection = 0;
+    selectedNumbers.length = 0;
+    selectedOperators.lenght = 0;
 });
 
 //Delete
 DELETE.addEventListener('click', () => {
+    let last = DISPLAY.textContent.charAt(DISPLAY.textContent.length - 1);
+
+    if (regex.test(last)) numberInSelection /= 10;
+    else {
+        selectedOperators.pop();
+        numberInSelection = selectedNumbers.pop();
+    }
+
+
     DISPLAY.textContent = DISPLAY.textContent.slice(0, -1)
 });
 
@@ -57,44 +72,44 @@ DOT.addEventListener('click', () => {
     DISPLAY.textContent += ',';
 })
 
-function evaluate(numbers, operators){
+function evaluate(numbers, operators) {
 
     let index = 0;
     console.table(numbers);
     console.table(operators);
 
-    while(true){
+    while (true) {
         let indexM = operators.indexOf('x');
         let indexD = operators.indexOf('/');
 
-        if(indexD < 0 && indexM < 0) break;
+        if (indexD < 0 && indexM < 0) break;
 
-        if(indexD < 0) index = indexM;
-        else if(indexM < 0) index = indexD;
+        if (indexD < 0) index = indexM;
+        else if (indexM < 0) index = indexD;
         else index = indexD < indexM ? indexD : indexM;
 
         console.log(index);
 
-        if(operators[index] == '/') numbers[index] /= numbers[index + 1];
+        if (operators[index] == '/') numbers[index] /= numbers[index + 1];
         else numbers[index] *= numbers[index + 1];
 
         numbers.splice(index + 1, 1);
         operators.splice(index, 1);
     }
 
-    while(true){
+    while (true) {
         let indexP = operators.indexOf('+');
         let indexM = operators.indexOf('-');
 
-        if(indexM < 0 && indexP < 0) break;
+        if (indexM < 0 && indexP < 0) break;
 
-        if(indexM < 0) index = indexP;
-        else if(indexP < 0) index = indexM;
+        if (indexM < 0) index = indexP;
+        else if (indexP < 0) index = indexM;
         else index = indexM < indexP ? indexM : indexP;
 
         console.log(index);
 
-        if(operators[index] == '+') numbers[index] += numbers[index + 1];
+        if (operators[index] == '+') numbers[index] += numbers[index + 1];
         else numbers[index] -= numbers[index + 1];
 
         numbers.splice(index + 1, 1);
