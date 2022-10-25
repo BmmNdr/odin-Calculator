@@ -63,6 +63,8 @@ EQUAL.addEventListener('click', () => {
 
     selectedNumbers.push(numberInSelection);
     numberInSelection = 0;
+    selectedNumbers.length = 0;
+    selectedOperators.lenght = 0;
 
     DISPLAY.textContent = evaluate(selectedNumbers, selectedOperators);
 })
@@ -70,13 +72,16 @@ EQUAL.addEventListener('click', () => {
 //Dot
 DOT.addEventListener('click', () => {
     DISPLAY.textContent += ',';
+
+    //TODO add float numbers
 })
 
+//TODO evaluate parentesis
 function evaluate(numbers, operators) {
-
     let index = 0;
-    console.table(numbers);
-    console.table(operators);
+
+    //console.table(numbers);
+    //console.table(operators);
 
     while (true) {
         let indexM = operators.indexOf('x');
@@ -88,7 +93,7 @@ function evaluate(numbers, operators) {
         else if (indexM < 0) index = indexD;
         else index = indexD < indexM ? indexD : indexM;
 
-        console.log(index);
+        //console.log(index);
 
         if (operators[index] == '/') numbers[index] /= numbers[index + 1];
         else numbers[index] *= numbers[index + 1];
@@ -107,7 +112,7 @@ function evaluate(numbers, operators) {
         else if (indexP < 0) index = indexM;
         else index = indexM < indexP ? indexM : indexP;
 
-        console.log(index);
+        //console.log(index);
 
         if (operators[index] == '+') numbers[index] += numbers[index + 1];
         else numbers[index] -= numbers[index + 1];
