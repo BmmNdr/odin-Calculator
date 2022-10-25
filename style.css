@@ -73,7 +73,7 @@ body {
     grid-template-columns: auto auto auto auto;
 }
 
-.number, .operator {
+.number, .operator, #dot, #equal {
     height: 50px;
     width: 60px;
 
