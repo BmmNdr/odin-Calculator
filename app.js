@@ -62,11 +62,12 @@ EQUAL.addEventListener('click', () => {
     LAST.textContent = DISPLAY.textContent;
 
     selectedNumbers.push(numberInSelection);
+
+    DISPLAY.textContent = evaluate(selectedNumbers, selectedOperators);
+
     numberInSelection = 0;
     selectedNumbers.length = 0;
     selectedOperators.lenght = 0;
-
-    DISPLAY.textContent = evaluate(selectedNumbers, selectedOperators);
 })
 
 //Dot
