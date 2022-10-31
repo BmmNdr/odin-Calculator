@@ -16,6 +16,8 @@ html {
 }
 
 body {
+    height: 100%;
+    width: 100%;
     display: table-cell;
     vertical-align: middle;
 }
@@ -25,8 +27,8 @@ body {
     flex-direction: column;
     padding: 15px;
 
-    height: 450px;
-    width: 300px;
+    height: 500px;
+    width: 350px;
     border-radius: 20px;
 
     justify-content: space-evenly;
@@ -69,7 +71,7 @@ body {
 #calculator #numpad {
     display: inline-grid;
     padding: 15px;
-    justify-content: center;
+    justify-content: space-between;
 
     grid-template-columns: auto auto auto auto;
 }
@@ -89,6 +91,6 @@ body {
     grid-column: span 2;
 
     margin: 5px;
-    width: 130px;
+    width: 140px;
     height: 50px;
 }

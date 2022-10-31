@@ -13,25 +13,42 @@ let numberInSelection = 0;
 let selectedNumbers = [];
 let selectedOperators = [];
 
+let lastIsNumber = false;
+let isAfterEqual = false;
+
 const regex = new RegExp('[0-9]');
 
 //numbers
 for (let i = 0; i < NUMBERS.length; i++)
     NUMBERS[i].addEventListener('click', () => {
+        if(isAfterEqual)
+        {
+            isAfterEqual = false;
+            DISPLAY.textContent = "";
+            numberInSelection = 0;
+        }
+
         DISPLAY.textContent += NUMBERS[i].textContent;
 
         numberInSelection = numberInSelection * 10 + parseInt(NUMBERS[i].textContent);
+        lastIsNumber = true;
     });
 
 //operators
 for (let i = 0; i < OPERATORS.length; i++)
     OPERATORS[i].addEventListener('click', () => {
-        DISPLAY.textContent += OPERATORS[i].textContent;
+        if (lastIsNumber) {
+            DISPLAY.textContent += OPERATORS[i].textContent;
 
-        selectedOperators.push(OPERATORS[i].textContent)
+            selectedOperators.push(OPERATORS[i].textContent)
 
-        selectedNumbers.push(numberInSelection);
-        numberInSelection = 0;
+            selectedNumbers.push(numberInSelection);
+            numberInSelection = 0;
+
+            lastIsNumber = false;
+            isAfterEqual = false;
+        }
+
     });
 
 //Clear
@@ -41,13 +58,19 @@ CLEAR.addEventListener('click', () => {
     numberInSelection = 0;
     selectedNumbers.length = 0;
     selectedOperators.lenght = 0;
+
+    lastIsNumber = false;
+    isAfterEqual = true;
 });
 
 //Delete
 DELETE.addEventListener('click', () => {
     let last = DISPLAY.textContent.charAt(DISPLAY.textContent.length - 1);
 
-    if (regex.test(last)) numberInSelection /= 10;
+    if (regex.test(last)){
+        let tmp = numberInSelection.toString();
+        numberInSelection = Number(tmp.substring(0, tmp.length - 1))
+    } 
     else {
         selectedOperators.pop();
         numberInSelection = selectedNumbers.pop();
@@ -59,15 +82,20 @@ DELETE.addEventListener('click', () => {
 
 //Equal
 EQUAL.addEventListener('click', () => {
-    LAST.textContent = DISPLAY.textContent;
+    if (lastIsNumber) {
+        LAST.textContent = DISPLAY.textContent;
 
-    selectedNumbers.push(numberInSelection);
+        selectedNumbers.push(numberInSelection);
 
-    DISPLAY.textContent = evaluate(selectedNumbers, selectedOperators);
+        numberInSelection = evaluate(selectedNumbers, selectedOperators);
+        DISPLAY.textContent = numberInSelection;
 
-    numberInSelection = 0;
-    selectedNumbers.length = 0;
-    selectedOperators.lenght = 0;
+        selectedNumbers.length = 0;
+        selectedOperators.lenght = 0;
+
+        isAfterEqual = true;
+    }
+
 })
 
 //Dot
