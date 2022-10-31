@@ -8,6 +8,8 @@ const DELETE = document.querySelector('#dltBtn');
 const EQUAL = document.querySelector('#equal');
 const DOT = document.querySelector('#dot');
 
+const HTML = document.querySelector('html');
+
 //the number that is beeing written
 let numberInSelection = 0;
 let selectedNumbers = [];
@@ -16,43 +18,63 @@ let selectedOperators = [];
 let lastIsNumber = false;
 let isAfterEqual = false;
 
-const regex = new RegExp('[0-9]');
+const NumberRegex = new RegExp('[0-9]');
+const OperatorRegex = new RegExp('[+*\/-]');
+
+//Keyboard input
+HTML.addEventListener('keyup', (e) => {
+    console.log(e.key);
+
+    if(NumberRegex.test(e.key))
+        NumberIn(parseInt(e.key));
+    else if(OperatorRegex.test(e.key))
+        OperatorIn(e.key);
+    else if(e.key === "Enter")
+        equal();
+    else if(e.key === "Escape")
+        clear();
+    else if(e.key === "Backspace")
+        dlt();
+})
 
 //numbers
 for (let i = 0; i < NUMBERS.length; i++)
-    NUMBERS[i].addEventListener('click', () => {
-        if(isAfterEqual)
-        {
-            isAfterEqual = false;
-            DISPLAY.textContent = "";
-            numberInSelection = 0;
-        }
+    NUMBERS[i].addEventListener('click', () => NumberIn(parseInt(NUMBERS[i].textContent)));
 
-        DISPLAY.textContent += NUMBERS[i].textContent;
+function NumberIn(n) {
+    if (isAfterEqual) {
+        isAfterEqual = false;
+        DISPLAY.textContent = "";
+        numberInSelection = 0;
+    }
 
-        numberInSelection = numberInSelection * 10 + parseInt(NUMBERS[i].textContent);
-        lastIsNumber = true;
-    });
+    DISPLAY.textContent += n;
+    numberInSelection = numberInSelection * 10 + n;
+    lastIsNumber = true;
+}
 
 //operators
 for (let i = 0; i < OPERATORS.length; i++)
-    OPERATORS[i].addEventListener('click', () => {
-        if (lastIsNumber) {
-            DISPLAY.textContent += OPERATORS[i].textContent;
+    OPERATORS[i].addEventListener('click', () => OperatorIn(OPERATORS[i].textContent));
 
-            selectedOperators.push(OPERATORS[i].textContent)
+function OperatorIn(op){
+    if (lastIsNumber) {
+        DISPLAY.textContent += op;
 
-            selectedNumbers.push(numberInSelection);
-            numberInSelection = 0;
+        selectedOperators.push(op)
 
-            lastIsNumber = false;
-            isAfterEqual = false;
-        }
+        selectedNumbers.push(numberInSelection);
+        numberInSelection = 0;
 
-    });
+        lastIsNumber = false;
+        isAfterEqual = false;
+    }
+}
 
 //Clear
-CLEAR.addEventListener('click', () => {
+CLEAR.addEventListener('click', () => clear());
+
+function clear(){
     DISPLAY.textContent = '';
     LAST.textContent = '';
     numberInSelection = 0;
@@ -61,16 +83,18 @@ CLEAR.addEventListener('click', () => {
 
     lastIsNumber = false;
     isAfterEqual = true;
-});
+}
 
 //Delete
-DELETE.addEventListener('click', () => {
+DELETE.addEventListener('click', () => dlt());
+
+function dlt(){
     let last = DISPLAY.textContent.charAt(DISPLAY.textContent.length - 1);
 
-    if (regex.test(last)){
+    if (NumberRegex.test(last)) {
         let tmp = numberInSelection.toString();
         numberInSelection = Number(tmp.substring(0, tmp.length - 1))
-    } 
+    }
     else {
         selectedOperators.pop();
         numberInSelection = selectedNumbers.pop();
@@ -78,10 +102,12 @@ DELETE.addEventListener('click', () => {
 
 
     DISPLAY.textContent = DISPLAY.textContent.slice(0, -1)
-});
+}
 
 //Equal
-EQUAL.addEventListener('click', () => {
+EQUAL.addEventListener('click', () => equal());
+
+function equal(){
     if (lastIsNumber) {
         LAST.textContent = DISPLAY.textContent;
 
@@ -95,8 +121,7 @@ EQUAL.addEventListener('click', () => {
 
         isAfterEqual = true;
     }
-
-})
+}
 
 //Dot
 DOT.addEventListener('click', () => {
@@ -113,7 +138,7 @@ function evaluate(numbers, operators) {
     //console.table(operators);
 
     while (true) {
-        let indexM = operators.indexOf('x');
+        let indexM = operators.indexOf('*');
         let indexD = operators.indexOf('/');
 
         if (indexD < 0 && indexM < 0) break;
