@@ -12,7 +12,7 @@ const HTML = document.querySelector('html');
 
 //the number that is beeing written
 let finalNumber = 0;
-let numberInSelection = 0;
+let numberInSelection = null;
 let selectedNumbers = [];
 let selectedOperators = [];
 
@@ -37,16 +37,22 @@ HTML.addEventListener('keyup', (e) => {
         clear();
     else if(e.key === "Backspace")
         dlt();
+    else if(e.key === ',' || e.key === '.')
+        dot();
 })
 
 //Dot
-DOT.addEventListener('click', () => {
+DOT.addEventListener('click', () => dot());
+
+function dot(){
     DISPLAY.textContent += ',';
+
     finalNumber = numberInSelection;
+
     numberInSelection = 0;
 
     hasDot = true;
-})
+}
 
 //numbers
 for (let i = 0; i < NUMBERS.length; i++)
