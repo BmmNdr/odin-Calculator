@@ -11,12 +11,14 @@ const DOT = document.querySelector('#dot');
 const HTML = document.querySelector('html');
 
 //the number that is beeing written
+let finalNumber = 0;
 let numberInSelection = 0;
 let selectedNumbers = [];
 let selectedOperators = [];
 
 let lastIsNumber = false;
 let isAfterEqual = false;
+let hasDot = false;
 
 const NumberRegex = new RegExp('[0-9]');
 const OperatorRegex = new RegExp('[+*\/-]');
@@ -35,6 +37,15 @@ HTML.addEventListener('keyup', (e) => {
         clear();
     else if(e.key === "Backspace")
         dlt();
+})
+
+//Dot
+DOT.addEventListener('click', () => {
+    DISPLAY.textContent += ',';
+    finalNumber = numberInSelection;
+    numberInSelection = 0;
+
+    hasDot = true;
 })
 
 //numbers
@@ -60,11 +71,9 @@ for (let i = 0; i < OPERATORS.length; i++)
 function OperatorIn(op){
     if (lastIsNumber) {
         DISPLAY.textContent += op;
-
         selectedOperators.push(op)
 
-        selectedNumbers.push(numberInSelection);
-        numberInSelection = 0;
+        finalizeNumber();
 
         lastIsNumber = false;
         isAfterEqual = false;
@@ -111,7 +120,7 @@ function equal(){
     if (lastIsNumber) {
         LAST.textContent = DISPLAY.textContent;
 
-        selectedNumbers.push(numberInSelection);
+        finalizeNumber();
 
         numberInSelection = evaluate(selectedNumbers, selectedOperators);
         DISPLAY.textContent = numberInSelection;
@@ -123,12 +132,18 @@ function equal(){
     }
 }
 
-//Dot
-DOT.addEventListener('click', () => {
-    DISPLAY.textContent += ',';
+function finalizeNumber(){
 
-    //TODO add float numbers
-})
+    if(hasDot)
+        finalNumber += numberInSelection * Math.pow(10, -(String(numberInSelection).length));
+    else
+        finalNumber = numberInSelection;
+
+    selectedNumbers.push(finalNumber);
+    finalNumber = 0;
+    numberInSelection = 0;
+    hasDot = false;
+}
 
 //TODO evaluate parentesis
 function evaluate(numbers, operators) {
